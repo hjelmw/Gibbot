@@ -1,0 +1,19 @@
+{
+  "name": "discord-door-opener",
+  "version": "1.0.0",
+  "description": "permition based door opener for residents at emilsborg using node.js and discord",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/M4nnogroth/discord-door-opener.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/M4nnogroth/discord-door-opener/issues"
+  },
+  "homepage": "https://github.com/M4nnogroth/discord-door-opener#readme"
+}
