@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/M4nnogroth/discord-door-opener/issues"
   },
-  "homepage": "https://github.com/M4nnogroth/discord-door-opener#readme"
+  "homepage": "https://github.com/M4nnogroth/discord-door-opener#readme",
+  "dependencies": {
+    "discord.js": "^10.0.1",
+    "hashmap": "^2.0.6",
+    "nightmare": "^2.9.0"
+  }
 }
