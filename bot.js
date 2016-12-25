@@ -2,18 +2,18 @@ const functions = require('./functions.js');
 const credentials = require('./credentials.json');
 const Discord = require('discord.js');
 const HashMap = require('hashmap');
-const client = new Discord.Client();
 
+const client = new Discord.Client();
 var permitted = new HashMap();
-var reply = '';
+
 
 client.on('message', message =>{
 	var list = message.content.split(' ');
 	var command = list[0];
 	var user = list[1];
 
+	var reply = '';
 	var value = 0;
-
 
 	//check if permission expired
 	permitted.forEach(function(value, key) {
@@ -46,14 +46,16 @@ client.on('message', message =>{
 	}
 
 	else if(message.content === '!permissions') {
+		reply = '';
 		message.reply('Authorized Users: ');
+		reply += '`` \n\n' + '\n';
 		permitted.forEach(function(value, key) {
 			value = Math.floor((value-((new Date).getTime()))/1000/60);
-			reply += '``'+key + ' : ' + value + ' Minutes left' + '\n';
-		});
+			reply += key + ' : ' + value + ' Minutes left' + '\n';
+		}); 
 		//End markdown
-		reply += '``';
-		message.reply(reply);
+		reply += ' ``';
+		message.channel.sendMessage(reply);
 	}
 
 	else if(message.content === '!open') {
@@ -62,16 +64,32 @@ client.on('message', message =>{
 				//Does user still have permission
 				if(Math.floor((value-((new Date).getTime())/1000/60)>0)) {
 					//functions.open_door(id, pwd);
-					message.reply('ok');
+					message.reply(' ok');
 				}
 				else {
 					message.reply('Permission expired `' + user + '`');
 					permitted.remove(key);
 				}
 			}
+				
+		});
+	}
 
+	else if(command === '!remove' && user !='') {
+		if(message.author.username === credentials.user.username 
+			&& message.author.discriminator === credentials.user.discriminator) {
+			permitted.forEach(function(value, key) {
+				if (key === user) {
+					permitted.remove(user);
+					message.reply('Ok, deleted ' + user);
+				}
 			});
 		}
+		else {
+			message.reply('You are not `'+credentials.user.username + '#' + credentials.user.discriminator + '`');	
+		}
+	}
+
 	})
 
 client.login(credentials.token);
