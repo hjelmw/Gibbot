@@ -2,6 +2,7 @@ const functions = require('./functions.js');
 const credentials = require('./credentials.json');
 const Discord = require('discord.js');
 const HashMap = require('hashmap');
+const dateformat = require('dateformat');
 const client = new Discord.Client();
 
 var Nightmare = require('nightmare');
@@ -147,16 +148,27 @@ client.on('message', message =>{
 	}
 
 	else if(message.content === '!help'){
+		/*
+			2016-01-08 => user = namn, id = 1321313131, action = !open, result = denied
+			2016-01-08 => user = namn2, id = 1323231321, action = !open, result = granted
+					
+	
 
+
+		*/
+		message.reply(new Date().toISOString(). replace(/T/, ' ').replace(/\..+/, ''));
+		
+		var reply = 'Available commands: \n\n'
+		+ '`!permit` grants a user permission to open door. Only available to <@'+credentials.user.id+'>\n' 
+		+ '`!permissions` returns a list of permitted users. Only available to currently permitted users\n'
+		+ '`!remove` removes a user from the list of permitted users. Only available to <@'+credentials.user.id+'>\n'
+		+ '`!open` opens the door. Only available to permitted users.\n\n'
+
+		+ 'All actions are logged';
+		message.channel.sendMessage(reply);
 	}
 
-	else if(message.content == '90') {
-		var voiceChannel = message.member.voiceChannel;
-		voiceChannel.join()
-			.then(connection => {
-				message.guild.voiceConnection.playFile('/runninginthe90s.mp3');
-			})
-	}
+	
 
 })
 	

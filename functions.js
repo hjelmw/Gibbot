@@ -1,5 +1,11 @@
 
 module.exports = {
+    log_action : function (id, name, action, status) {
+        var log = new Date(year, month, day, hours, minutes) ;
+
+    },
+
+
     open_door : function(id, pwd) {
         
         var Nightmare = require('nightmare');

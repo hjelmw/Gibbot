@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/M4nnogroth/discord-door-opener#readme",
   "dependencies": {
+    "dateformat": "^2.0.0",
     "discord.js": "^10.0.1",
     "ffmpeg": "0.0.4",
     "hashmap": "^2.0.6",
