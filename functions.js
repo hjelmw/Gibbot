@@ -1,11 +1,12 @@
-const jsonfile = require('jsonfile')
+const Nightmare = require('nightmare');
+const nightmare = Nightmare({ show: true });
+const jsonfile = require('jsonfile');
+const dateFormat = require('dateformat');
 const credentials = require('./credentials.json');
-var dateFormat = require('dateformat');
 
 module.exports = {
     log_action : function (id, name, action, status) {
-        var now = new Date();
-        dateFormat(now, "isoDateTime");
+        var now = dateFormat(new Date(), "yyyy-mm-dd, hh:MM:ss");
                 
         var log = {
             'date': now, 
@@ -26,9 +27,6 @@ module.exports = {
 
     open_door : function(id, pwd) {
         
-        var Nightmare = require('nightmare');
-        var nightmare = Nightmare({ show: true });
-  
         nightmare
             .goto('https://www.chalmersstudentbostader.se/login/')
             .wait('#page')
@@ -57,7 +55,7 @@ module.exports = {
                         
             //Open the door
             .click('#GridViewDoors_ctl08_btnOpen')
-            .wait('#page')
+            .wait(1000)
             .end()
 
             //report error
@@ -71,19 +69,4 @@ module.exports = {
                 }
             });
     },
-
-    ping_host : function(ip) {
-        var ping = require('net-ping');
-        var session = ping.createSession();
-        
-        //non-zero value means something went wrong
-        session.pingHost (ip, function (error, target) {
-        if (error) {
-            return 1;
-        } 
-        else {
-            return 0;
-        }
-    });
-    }
 }
