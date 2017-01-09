@@ -15,7 +15,7 @@ module.exports = {
             'result': status
         };
 
-        jsonfile.writeFile(credentials.log.filename, log, {spaces: 4}, function (err) {
+        jsonfile.writeFile(credentials.log.filename, log, {spaces: 4, flag: 'a'}, function (err) {
             if(err) {
                 console.log(err);
             }
