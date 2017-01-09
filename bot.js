@@ -33,6 +33,7 @@ client.on('message', message =>{
 	});
 	
 	if(command === '!permit' && user != ''){
+
 		if(message.author.id === credentials.user.id) {
 			if (isNaN(time)) {time = 60;}
 
@@ -51,6 +52,8 @@ client.on('message', message =>{
 		else {
 			message.reply('You are not <@' + credentials.user.id + '>');
 		}
+
+		functions.log_action(message.author.id, message.author.name, command, false);
 	}
 
 	else if(message.content === '!permissions') {
@@ -66,6 +69,8 @@ client.on('message', message =>{
 		else {
 			message.reply('You do not have permission to do that ' + message.content);
 		}
+		
+		functions.log_action(message.author.id, message.author.name, command, false);
 	}
 	
 	else if(message.content === '!open') {
@@ -84,8 +89,8 @@ client.on('message', message =>{
 	            		.wait('#page')
 
 	            		//Fill out credentials
-	            		.insert('input[name="log"]' , credentials.id)
-	            		.insert('input[name="pwd"]', credentials.pwd)
+	            		.insert('input[name="log"]' , credentials.login.id)
+	            		.insert('input[name="pwd"]', credentials.login.pwd)
 	            		.click('.btn-primary')
 
 	            		//Wait until <a>öppna port</a> can be seen by nightmare
@@ -173,4 +178,4 @@ client.on('message', message =>{
 })
 	
 
-client.login(credentials.token);
+client.login(credentials.bot.token);

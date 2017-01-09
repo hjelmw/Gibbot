@@ -1,7 +1,25 @@
+const jsonfile = require('jsonfile')
+const credentials = require('./credentials.json');
+var dateFormat = require('dateformat');
 
 module.exports = {
     log_action : function (id, name, action, status) {
-        var log = new Date(year, month, day, hours, minutes) ;
+        var now = new Date();
+        dateFormat(now, "isoDateTime");
+                
+        var log = {
+            'date': now, 
+            'name': name, 
+            'id': id, 
+            'action': action, 
+            'result': status
+        };
+
+        jsonfile.writeFile(credentials.log.filename, log, {spaces: 4}, function (err) {
+            if(err) {
+                console.log(err);
+            }
+        });
 
     },
 
