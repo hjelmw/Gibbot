@@ -34,28 +34,41 @@ module.exports = {
             .wait('#page')
 
             //Fill out credentials
-            .insert('input[name="log"]' , id)
-            .insert('input[name="pwd"]', pwd)
+            .insert('input[name="log"]' , credentials.login.id)
+            .insert('input[name="pwd"]', credentials.login.pwd)
             .click('.btn-primary')
 
             //Wait until <a>öppna port</a> can be seen by nightmare
             .wait('#page > div > div > div > div.container > div > div.span8 > div.row-fluid.equal > div:nth-child(2) > div > div.BoxContent > div.f2-widget.Stealth.Aptuslogin.Aptusport > a') 
 
             //Server does not seem to grant access if wait is too low :/
-            .wait(1000)
-
+            .wait('#page > div > div > div > div.container > div > div.span4 > div.Box.Skugga.Label > div.BoxContent > div.f2-widget.Kontaktuppgifter > div > div.span7 > dl > dd')
+                        
             //Click on 'öppna port'
+            .evaluate(function() {
+                //Change <a> tag so it does not cause a pop-up
+                var link = document.querySelector('#page > div > div > div > div.container > div > div.span8 > div.row-fluid.equal > div:nth-child(2) > div > div.BoxContent > div.f2-widget.Stealth.Aptuslogin.Aptusport > a')
+                link.target = "";
+                return null;
+            })
             .click('#page > div > div > div > div.container > div > div.span8 > div.row-fluid.equal > div:nth-child(2) > div > div.BoxContent > div.f2-widget.Stealth.Aptuslogin.Aptusport > a')
-            .wait(5000)
+                        
+            .wait('#GridViewDoors_ctl08_btnOpen')
+                        
+            //Open the door
+            .click('#GridViewDoors_ctl08_btnOpen')
+            .wait('#page')
             .end()
 
             //report error
             .run(function(error, result) {
-              if (error) {
+            if (error) {
+                message.reply('Something went wrong: ');
+                message.channel.sendMessage(error);
                 console.error(error);
-              } else {
-                console.log(result);
-              }
+                } else {
+                    message.reply('Done');
+                }
             });
     },
 
