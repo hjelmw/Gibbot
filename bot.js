@@ -101,7 +101,14 @@ client.on('message', message =>{
 					status = true;
 					
 					//Open the door
-					functions.open_door(credentials.login.id, credentials.login.pwd);				        
+					/* 
+					TODO 
+					make open_door asynchronous
+
+					*/
+					functions.open_door(credentials.login.id, credentials.login.pwd, function(result){
+						message.channel.sendMessage(result);
+					});	        
 				} else {
 						message.reply('Permission expired!');
 						permitted.remove(key);

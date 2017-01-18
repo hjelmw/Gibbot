@@ -5,7 +5,7 @@ const dateFormat = require('dateformat');
 const credentials = require('./credentials.json');
 
 module.exports = {
-    log_action : function (id, name, action, status) {
+    log_action : function (id, name, action, result) {
         var now = dateFormat(new Date(), "yyyy-mm-dd, hh:MM:ss");
                 
         var log = {
@@ -13,7 +13,7 @@ module.exports = {
             'name': name, 
             'id': id, 
             'action': action, 
-            'result': status
+            'result': result
         };
 
         jsonfile.writeFile(credentials.log.filename, log, {spaces: 4, flag: 'a'}, function (err) {
@@ -52,21 +52,15 @@ module.exports = {
             .click('#page > div > div > div > div.container > div > div.span8 > div.row-fluid.equal > div:nth-child(2) > div > div.BoxContent > div.f2-widget.Stealth.Aptuslogin.Aptusport > a')
                         
             .wait('#GridViewDoors_ctl08_btnOpen')
-                        
+            //.click('ewq')        
             //Open the door
-            .click('#GridViewDoors_ctl08_btnOpen')
+            //.click('#GridViewDoors_ctl08_btnOpen')
             .wait(1000)
             .end()
 
             //report error
-            .run(function(error, result) {
-            if (error) {
-                message.reply('Something went wrong: ');
-                message.channel.sendMessage(error);
-                console.error(error);
-                } else {
-                    message.reply('Done');
-                }
+            .then(function (result) {
+                return result;      
             });
     },
 }
