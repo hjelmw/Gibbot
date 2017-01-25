@@ -25,8 +25,7 @@ module.exports = {
     },
 
 
-    open_door : function(id, pwd) {
-        
+    open_door : function(id, pwd, callback) {
         nightmare
             .goto('https://www.chalmersstudentbostader.se/login/')
             .wait('#page')
@@ -49,18 +48,27 @@ module.exports = {
                 link.target = "";
                 return null;
             })
+
             .click('#page > div > div > div > div.container > div > div.span8 > div.row-fluid.equal > div:nth-child(2) > div > div.BoxContent > div.f2-widget.Stealth.Aptuslogin.Aptusport > a')
                         
-            .wait('#GridViewDoors_ctl08_btnOpen')
-            //.click('ewq')        
+            .wait('#GridViewDoors_ctl08_btnOpen')       
+            
             //Open the door
             //.click('#GridViewDoors_ctl08_btnOpen')
             .wait(1000)
             .end()
 
             //report error
-            .then(function (result) {
-                return result;      
+            .then(function (error, result) {
+                
+                //do a callback when we are done
+                if(error) {
+                    callback(error)
+                }
+                else {
+                    callback("done");
+                }
+                
             });
-    },
+    }
 }
