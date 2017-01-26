@@ -3,6 +3,6 @@ permition based door opener for residents at Chalmers studentbostäder using nod
 
 ## How to use
 1. Change name of credentials_template.json to credentials.json and replace with your own data
-2. npm install
+2. npm install (discord.js might complain about opus. Ignore this)
 3. node bot.js
 
