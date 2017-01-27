@@ -14,6 +14,10 @@ var reply = '';
 var value = 0;
 var BlCounter = 0;
 
+process.on('uncaughtException', function (err) {
+  console.log('Caught exception: ' + err);
+});
+
 client.on('message', message =>{
 	if(message.channel.id === credentials.channel.id) {
 		list = message.content.split(' ');
