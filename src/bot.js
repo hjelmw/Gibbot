@@ -19,7 +19,7 @@ process.on('uncaughtException', function (err) {
 });
 
 client.on('message', message =>{
-	if(message.channel.id === credentials.channel.id) {
+	//if(message.channel.id === credentials.channel.id) {
 		list = message.content.split(' ');
 		command = list[0];
 		user = list[1];
@@ -171,6 +171,7 @@ client.on('message', message =>{
 				functions.log_action(message.author.id, message.author.username, command, status);
 			}
 		}
+		/*
 		else if(message.content === '90') {
 			var channel = message.member.voiceChannel;
 
@@ -181,9 +182,9 @@ client.on('message', message =>{
  			}).catch(console.error);
 
     		
-		}
+		}*/
 		
-	}
+	//}
 })
 
 	
