@@ -2,7 +2,7 @@ const Nightmare = require('nightmare');
 const nightmare = Nightmare({ show: true });
 const jsonfile = require('jsonfile');
 const dateFormat = require('dateformat');
-const credentials = require('./credentials.json');
+const credentials = require('../credentials.json');
 
 module.exports = {
     log_action : function (id, name, action, result) {

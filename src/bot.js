@@ -1,5 +1,5 @@
 const functions = require('./functions.js');
-const credentials = require('./credentials.json');
+const credentials = require('../credentials.json');
 const Discord = require('discord.js');
 const HashMap = require('hashmap');
 const client = new Discord.Client();
