@@ -1,8 +1,8 @@
 const Nightmare = require('nightmare');
-const nightmare = Nightmare({ show: false });
+const nightmare = Nightmare({ show: true });
 const jsonfile = require('jsonfile');
 const dateFormat = require('dateformat');
-const credentials = require('../credentials.json');
+const credentials = require('./credentials.json');
 
 module.exports = {
     log_action : function (id, name, action, result) {
@@ -54,8 +54,12 @@ module.exports = {
             .wait('#GridViewDoors_ctl08_btnOpen')       
             
             //Open the door
-            //.click('#GridViewDoors_ctl08_btnOpen')
-            .wait(1000)
+            .click('#GridViewDoors_ctl08_btnOpen')
+
+            //Wait for page to reload fully
+            .wait('#GridViewDoors_ctl08_btnOpen')
+            
+            //Then exit
             .end()
 
             //report error
