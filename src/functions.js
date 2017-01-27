@@ -1,5 +1,5 @@
 const Nightmare = require('nightmare');
-const nightmare = Nightmare({ show: true });
+const nightmare = Nightmare({ show: false });
 const jsonfile = require('jsonfile');
 const dateFormat = require('dateformat');
 const credentials = require('../credentials.json');
