@@ -6,6 +6,7 @@ const credentials = require('../credentials.json');
 
 module.exports = {
     log_action : function (id, name, action, result) {
+
         var now = dateFormat(new Date(), "yyyy-mm-dd, hh:MM:ss");
                 
         var log = {
@@ -22,6 +23,7 @@ module.exports = {
             }
         });
 
+        console.log(now + " | " + name + " with id: " + id +"\n used command " + result + "result was " + result);
     },
 
 

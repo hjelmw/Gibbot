@@ -65,7 +65,7 @@ client.on('message', message =>{
 				message.reply('You are not <@' + credentials.user.id + '>');
 			}
 			//Log action
-			functions.log_action(message.author.id, message.author.username, command, status);
+			functions.log_action(message.author.id, message.author.username, message.content, status);
 		}
 
 		else if(message.content === '!permissions') {
@@ -144,7 +144,7 @@ client.on('message', message =>{
 			}
 			else {
 				message.reply('You are not <@' + credentials.user.id + '>');
-				functions.log_action(message.author.id, message.author.username, command, status);
+				functions.log_action(message.author.id, message.author.username, message.content, status);
 			}
 		}
 
