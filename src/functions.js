@@ -1,5 +1,5 @@
 const Nightmare = require('nightmare');
-const nightmare = Nightmare({ show: true });
+const nightmare = Nightmare({ show: false });
 const jsonfile = require('jsonfile');
 const dateFormat = require('dateformat');
 const credentials = require('../credentials.json');
@@ -67,9 +67,11 @@ module.exports = {
                 
                 //do a callback when we are done
                 if(error) {
+                    console.log(error);
                     callback(error)
                 }
                 else {
+                    console.log('Door was opened');
                     callback("done");
                 }
                 
