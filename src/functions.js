@@ -1,5 +1,5 @@
 const Nightmare = require('nightmare');
-const nightmare = Nightmare({ show: false });
+const nightmare = Nightmare({ show: true }); //Maybe this has to be set to true, no clue actually
 const jsonfile = require('jsonfile');
 const dateFormat = require('dateformat');
 const credentials = require('../credentials.json');
@@ -55,7 +55,7 @@ module.exports = {
                         
             .wait('#GridViewDoors_ctl08_btnOpen')       
             
-            //Open the door
+            //Actually open the door
             .click('#GridViewDoors_ctl08_btnOpen')
 
             //Wait for page to reload fully
