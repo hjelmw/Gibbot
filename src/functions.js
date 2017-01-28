@@ -23,7 +23,7 @@ module.exports = {
             }
         });
 
-        console.log(now + " | " + name + " with id: " + id +"\n used command " + result + "result was " + result);
+        console.log(now + " | " + name + " with id: " + id +" used command " + action + "result was " + result);
     },
 
 
