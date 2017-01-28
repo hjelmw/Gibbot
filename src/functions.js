@@ -27,7 +27,7 @@ module.exports = {
 
 
     open_door : function(id, pwd, callback) {
-	const nightmare = Nightmare({ show: true }); //Maybe this has to be set to true, no clue actually
+	   const nightmare = Nightmare({ show: true }); //Maybe this has to be set to true, no clue actually
 
         nightmare
             .goto('https://www.chalmersstudentbostader.se/login/')
@@ -57,7 +57,7 @@ module.exports = {
             .wait('#GridViewDoors_ctl08_btnOpen')       
             
             //Actually open the door
-            //.click('#GridViewDoors_ctl08_btnOpen')
+            .click('#GridViewDoors_ctl08_btnOpen')
 
             //Wait for page to reload fully
             .wait('#GridViewDoors_ctl08_btnOpen')
@@ -71,9 +71,10 @@ module.exports = {
                 callback("done");
                 
             })
-	    .catch(function (error) {
-    	        console.error(error);
-  	    });
+    	    .catch(function (error) {
+        	   console.error(error);
+               callback(error);
+      	    });
 
     }
 }
