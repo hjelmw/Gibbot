@@ -21,9 +21,6 @@
     "discord.js": "^10.0.1",
     "ffmpeg": "0.0.4",
     "hashmap": "^2.0.6",
-    "nightmare": "^2.9.0",
-    "node-opus": "^0.2.4",
-    "opusscript": "0.0.1",
-    "ytdl-core": "^0.7.21"
+    "nightmare": "^2.9.0"
   }
 }
