@@ -37,7 +37,6 @@ client.on('message', message =>{
 			var status = false;
 			
 			if(message.author.id === credentials.user.id) {
-
 				//No time was given
 				if (isNaN(time)) {time = 60;}
 
@@ -68,17 +67,26 @@ client.on('message', message =>{
 		else if(message.content === '!permissions') {
 			var status = false;
 			if(permitted.has(message.author.id) || message.author.id === credentials.user.id) {
-				
 				message.reply('Authorized users: \n');
+
 				permitted.forEach(function(value, key) {
+					
+					//For some reason this is not recursive. RIP Haskell
 					value = Math.floor((value-((new Date).getTime()))/1000/60);
-					reply += '<@' + key + '>' + ' : ' + value + ' Minutes left' + '\n';
-				}); 
-				
+					
+					if(!isNaN){
+						reply += '<@' + key + '>' + ' : ' + value + ' Minutes left' + '\n';
+					}
+					else {
+						reply += '';
+					}
+				});
+
 				message.channel.sendMessage(reply);
 				status = true;
 			}
 			else {
+				//Escape ' character
 				message.reply('You don\'t have permission to do that!');
 			}
 
@@ -87,34 +95,38 @@ client.on('message', message =>{
 		
 		else if(message.content === '!open') {
 			var status = false;
-
+				
 			if(permitted.has(message.author.id) || message.author.id === credentials.user.id){
 
-				if(currentTime - ((new Date).getTime) <= 0)	{
-						currentTime = (new Date).getTime+(1000*30);
-					}
-				
+				if(currentTime - ((new Date).getTime()) <= 0)	{
+						currentTime = (new Date).getTime()+(1000*30);
+				}
+
+				else {
+					message.reply('You need to wait another: ' + Math.floor(((currentTime/1000) - ((new Date).getTime())/1000)) + ' seconds');
+					return;
+				}
+
 				//Does user still have permission
-				if(((permitted.get(message.author.id))-((new Date).getTime())/1000/60)>=0 
-					|| message.author.id === credentials.user.id) {
-					
-					
+				if(permitted.has(message.author.id) || message.author.id === credentials.user.id) {
 
-					if(currentTime - ((new Date).getTime) >= 0) {
+					console.log("open 4\n");
+					console.log((new Date).getTime())
+					console.log(currentTime - ((new Date).getTime()));
 
+					if(currentTime - ((new Date).getTime()) >= 0) {
+						console.log("open 5");
+				
 						message.reply('Ok, please wait...');
 						
 						//Action was allowed
 						status = true;
 						
-						/*	
 						functions.open_door(credentials.login.id, credentials.login.pwd, function(data) {
 							//Wait for callback
 							message.channel.sendMessage(data);
 						});
-						*/
 					}
-
 				}
 				
 				else {
@@ -124,7 +136,8 @@ client.on('message', message =>{
 
 			}
 			else {
-				message.reply('You are not, <@' + credentials.user.id + '>');
+				message.reply('You do not have permission to do that!');
+				status = false;
 			}
 			functions.log_action(message.author.id, message.author.username, command, status);
 		}
