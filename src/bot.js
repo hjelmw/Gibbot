@@ -1,31 +1,35 @@
 const functions = require('./functions.js');
 const credentials = require('../credentials.json');
 const Discord = require('discord.js');
+const ytdl = require('ytdl-core');
 const HashMap = require('hashmap');
 const client = new Discord.Client();
 
 var permitted = new HashMap();
+var queue = new HashMap();
 var currentTime = 0;
 var list;
 var command;
 var user;
 var time;
-var reply = '';
-var value = 0;
-
+var reply;
+var value;
+var channel;
+var dispatcher = '';
+var stream = '';
 //Don't remember what this is for, might delete
 var BlCounter = 0;
-
+/*
 client.on('ready', () => {
 	console.log('On');
 	functions.log_action(client.id, client.author.username, 'Online', true);
 });
-
+*/
 client.on('message', message =>{
 	list = message.content.split(' ');
 	command = list[0];
-	user = list[1];
-	time = list[list.length - 1];
+	arg1 = list[1];
+	time2 = list[list.length - 1];
 	reply = '';
 
 	//check if permission expired
@@ -36,17 +40,17 @@ client.on('message', message =>{
 		}
 	});
 	
-if(command === '!permit' && user != ''){
+if(command === '!permit' && arg1 != ''){
 
 	//Assume action was denied
 	var status = false;
 		
 	if(message.author.id === credentials.user.id) {
 			//No time was given
-		if (isNaN(time)) {time = 60;}
+		if (isNaN(arg2)) {arg2 = 60;}
 
 		message.mentions.users.map((user => {
-			permitted.set(user.id, (new Date).getTime()+(60*(time)*1000));
+			permitted.set(user.id, (new Date).getTime()+(60*(arg2)*1000));
 		}));
 
 		message.reply('The following users have been granted permission: \n');
@@ -76,18 +80,12 @@ if(command === '!permit' && user != ''){
 
 			permitted.forEach(function(value, key) {
 				
-				//For some reason this is not recursive. RIP Haskell
-				value = Math.floor((value-((new Date).getTime()))/1000/60);
-				
-				if(!isNaN){
-					reply += '<@' + key + '>' + ' : ' + value + ' Minutes left' + '\n';
-				}
-				else {
-					reply += '';
-				}
+				value = Math.floor((value-((new Date).getTime()))/1000/60);		
+				reply += '<@' + key + '>' + ' : ' + value + ' Minutes left' + '\n';
 			});
 
-			message.channel.sendMessage(reply);
+			if(reply != null) {message.channel.sendMessage(reply);}
+			else{message.channel.sendMessage('No permitted users');}
 			status = true;
 		}
 		else {
@@ -142,9 +140,15 @@ if(command === '!permit' && user != ''){
 		functions.log_action(message.author.id, message.author.username, command, status);
 	}
 
-	else if(command === '!remove' && user !='') {
+	else if(command === '!remove' && arg1 !='') {
+
 		var status = false;
-		if(message.author.id === credentials.user.id) {
+		if (arg1.includes('https://www.youtube.com/watch?v=')) {
+			queue.remove(arg1);
+			message.reply('Ok, removed ' + arg1 + ' from the queue');
+		}
+
+		else if(message.author.id === credentials.user.id) {
 
 			message.mentions.users.map((user => {
 				status = true;
@@ -189,6 +193,35 @@ if(command === '!permit' && user != ''){
 
 		functions.log_action(message.author.id, message.author.username, command, status);
 	}
+
+	else if(command === '!play'){
+		channel = message.member.voiceChannel;
+
+		channel.join().then(connection => {
+			
+			stream = ytdl("https://www.youtube.com/watch?v=Y97u-U0nvJM", {filter : 'audioonly'});
+       		dispatcher = connection.playStream(stream, );
+		}).catch(console.error);
+
+		functions.log_action(message.author.id, message.author.username, command, status);
+	}
+
+	else if(command === '!queue'){
+		if (arg1.includes('https://www.youtube.com/watch?v=')) {
+			
+			queue.set(arg1, message.author.id);
+			message.channel.sendMessage('<@' + message.author.id+'> ' + 'Added ' + arg1 + ' to the queue');
+		}
+		else {
+			message.channel.sendMessage('Not a valid link, I currently only accept links of the format `https://www.youtube.com/watch?v=ID`')
+		}
+
+		functions.log_action(message.author.id, message.author.username, command, status);
+	}
+
+
+	
+
 	/*
 	else if(message.content === '90') {
 		var channel = message.member.voiceChannel;
