@@ -209,8 +209,7 @@ if(command === '!permit' && arg1 != ''){
 				message.reply('The playlist is currently empty, use !queue followed by a valid youtube link to add entries');
 			}
 			else{
-				message.channel.sendMessage('Playlist: ');
-
+				reply += "Playlist: \n\n";
 				for (var i = 0; i < queue.length; i++) {
 					reply+= (i+1) + ': '+ queue[i] + '\n';
 				}
@@ -239,17 +238,19 @@ if(command === '!permit' && arg1 != ''){
 		if (queue.length > 0) {
 			
 				channel.join().then(connection => {
+				/*
 				for(var i = 0; i< queue.length; i++){
+				*/
 					var current = queue.shift();
 					
 					//Initial seek and volume parameters need to be set
 					var streamOptions = { seek : 0, volume : 1}
 					
 					stream = ytdl(current, {filter : 'audioonly'});
+					
 		       		dispatcher = connection.playStream(stream, streamOptions);
-
-		       		message.channel.sendMessage('Currently playing' + current);
-				}
+		       		message.channel.sendMessage('Currently playing: ' + current);
+				//}
 				
 				}).catch(console.error);
 				
