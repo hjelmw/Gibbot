@@ -6,7 +6,7 @@ const HashMap = require('hashmap');
 const client = new Discord.Client();
 
 var permitted = new HashMap();
-var queue = new HashMap();
+var queue = [];
 var currentTime = 0;
 var list;
 var command;
@@ -25,11 +25,16 @@ client.on('ready', () => {
 	functions.log_action(client.id, client.author.username, 'Online', true);
 });
 */
+
+client.on('debug', message =>{
+	console.log(message);
+});
+
 client.on('message', message =>{
 	list = message.content.split(' ');
 	command = list[0];
 	arg1 = list[1];
-	time2 = list[list.length - 1];
+	arg2 = list[list.length - 1];
 	reply = '';
 
 	//check if permission expired
@@ -143,10 +148,14 @@ if(command === '!permit' && arg1 != ''){
 	else if(command === '!remove' && arg1 !='') {
 
 		var status = false;
+				
 		if (arg1.includes('https://www.youtube.com/watch?v=')) {
-			queue.remove(arg1);
+			
+			/* TODO remove from queue */
+
 			message.reply('Ok, removed ' + arg1 + ' from the queue');
 		}
+		
 
 		else if(message.author.id === credentials.user.id) {
 
@@ -194,24 +203,29 @@ if(command === '!permit' && arg1 != ''){
 		functions.log_action(message.author.id, message.author.username, command, status);
 	}
 
-	else if(command === '!play'){
-		channel = message.member.voiceChannel;
-
-		channel.join().then(connection => {
-			
-			stream = ytdl("https://www.youtube.com/watch?v=Y97u-U0nvJM", {filter : 'audioonly'});
-       		dispatcher = connection.playStream(stream, );
-		}).catch(console.error);
-
-		functions.log_action(message.author.id, message.author.username, command, status);
-	}
-
 	else if(command === '!queue'){
-		if (arg1.includes('https://www.youtube.com/watch?v=')) {
-			
-			queue.set(arg1, message.author.id);
-			message.channel.sendMessage('<@' + message.author.id+'> ' + 'Added ' + arg1 + ' to the queue');
+		if (!arg1) {
+			if (queue.length === 0) {
+				message.reply('The playlist is currently empty, use !queue followed by a valid youtube link to add entries');
+			}
+			else{
+				message.channel.sendMessage('Playlist: ');
+
+				for (var i = 0; i < queue.length; i++) {
+					reply+= (i+1) + ': '+ queue[i] + '\n';
+				}
+				message.channel.sendMessage('\n' + reply);	
+			}
 		}
+
+		else if (arg1.includes('https://www.youtube.com/watch?v=')) {
+			queue[queue.length] = arg1;
+			message.channel.sendMessage('<@' + message.author.id+'> ' + 'Added ' + arg1 + ' to the queue');
+			if (queue.length > 1) {
+				message.channel.sendMessage('There are currently ' + queue.length + ' entries in the playlist, use !queue without any arguments to see them');
+			}
+		}
+
 		else {
 			message.channel.sendMessage('Not a valid link, I currently only accept links of the format `https://www.youtube.com/watch?v=ID`')
 		}
@@ -219,21 +233,31 @@ if(command === '!permit' && arg1 != ''){
 		functions.log_action(message.author.id, message.author.username, command, status);
 	}
 
+	else if(command === '!play'){
+		channel = message.member.voiceChannel;
 
-	
-
-	/*
-	else if(message.content === '90') {
-		var channel = message.member.voiceChannel;
-
-		channel.join().then(connection => {
+		if (queue.length > 0) {
 			
-				const dispatcher = connection.playFile('./90.mp3');
-			
-			}).catch(console.error);
+				channel.join().then(connection => {
+				for(var i = 0; i< queue.length; i++){
+					var current = queue.shift();
+					
+					//Initial seek and volume parameters need to be set
+					var streamOptions = { seek : 0, volume : 1}
+					
+					stream = ytdl(current, {filter : 'audioonly'});
+		       		dispatcher = connection.playStream(stream, streamOptions);
 
-		
-	}*/
+		       		message.channel.sendMessage('Currently playing' + current);
+				}
+				
+				}).catch(console.error);
+				
+				functions.log_action(message.author.id, message.author.username, command, status);
+				
+			}
+		}
+
 })
 
 	
