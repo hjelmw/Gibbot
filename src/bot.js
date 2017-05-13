@@ -1,5 +1,4 @@
 const functions = require('./functions.js');
-var blacklist = require('./blacklist');
 const credentials = require('../credentials.json');
 const Discord = require('discord.js');
 const ytdl = require('ytdl-core');
