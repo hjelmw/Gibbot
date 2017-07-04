@@ -19,7 +19,7 @@ var BlCounter = 0;
 /*
 client.on('ready', () => {
 	console.log('On');
-	functions.log_action(client.id, client.author.username, 'Online', true);
+	//functions.log_action(client.id, client.author.username, 'Online', true);
 });
 */
 
@@ -44,7 +44,7 @@ if(command === '!permit' && user != ''){
 	var status = false;
 		
 	if(message.author.id === credentials.user.id) {
-			//No time was given
+		//No time was given
 		if (isNaN(time)) {time = 60;}
 
 		message.mentions.users.map((user => {
@@ -68,7 +68,7 @@ if(command === '!permit' && user != ''){
 		message.reply('You are not <@' + credentials.user.id + '>');
 	}
 	//Log action
-	functions.log_action(message.author.id, message.author.username, message.content, status);
+	//functions.log_action(message.author.id, message.author.username, message.content, status);
 	}
 
 	else if(message.content === '!permissions') {
@@ -97,7 +97,7 @@ if(command === '!permit' && user != ''){
 			message.reply('You don\'t have permission to do that!');
 		}
 
-		functions.log_action(message.author.id, message.author.username, command, status);
+		//functions.log_action(message.author.id, message.author.username, command, status);
 	}
 	
 	else if(message.content === '!open') {
@@ -141,7 +141,7 @@ if(command === '!permit' && user != ''){
 			message.reply('You do not have permission to do that!');
 			status = false;
 		}
-		functions.log_action(message.author.id, message.author.username, command, status);
+		//functions.log_action(message.author.id, message.author.username, command, status);
 	}
 
 	else if(command === '!remove' && user !='') {
@@ -158,7 +158,7 @@ if(command === '!permit' && user != ''){
 		else {
 			message.reply('You are not <@' + credentials.user.id + '>');
 		}
-		functions.log_action(message.author.id, message.author.username, message.content, status);
+		//functions.log_action(message.author.id, message.author.username, message.content, status);
 	}
 
 	else if(message.content === '!help'){		
@@ -172,7 +172,7 @@ if(command === '!permit' && user != ''){
 		+ 'All actions are logged';
 		message.channel.sendMessage(reply);
 
-		functions.log_action(message.author.id, message.author.username, message.content, true);
+		//functions.log_action(message.author.id, message.author.username, message.content, true);
 	}
 
 	else if(message.content === '!log'){
@@ -189,7 +189,7 @@ if(command === '!permit' && user != ''){
 
 		}
 
-		functions.log_action(message.author.id, message.author.username, command, status);
+		//functions.log_action(message.author.id, message.author.username, command, status);
 	}
 	/*
 	else if(message.content === '90') {
