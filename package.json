@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/M4nnogroth/discord-door-opener.git"
+    "url": "git+https://github.com/M4nnogroth/Gibbot.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/M4nnogroth/discord-door-opener/issues"
+    "url": "https://github.com/M4nnogroth/Gibbot/issues"
   },
-  "homepage": "https://github.com/M4nnogroth/discord-door-opener#readme",
+  "homepage": "https://github.com/M4nnogroth/Gibbot#readme",
   "dependencies": {
     "dateformat": "^2.0.0",
     "discord.js": "^10.0.1",
