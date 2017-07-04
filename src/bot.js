@@ -16,10 +16,12 @@ var value = 0;
 //Don't remember what this is for, might delete
 var BlCounter = 0;
 
+/*
 client.on('ready', () => {
 	console.log('On');
 	functions.log_action(client.id, client.author.username, 'Online', true);
 });
+*/
 
 client.on('message', message =>{
 	list = message.content.split(' ');
