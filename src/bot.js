@@ -13,10 +13,6 @@ var time;
 var reply = '';
 var value = 0;
 
-client.on('ready', () => {
-	console.log('On \n' + 'master id: ' + credentials.id);
-});
-
 client.on('message', message =>{
 	//Split message into command, users, time so we have them readily available
 	list = message.content.split(' ');
