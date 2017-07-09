@@ -3,8 +3,13 @@ const credentials = require('../credentials.json');
 const Discord = require('discord.js');
 const HashMap = require('hashmap');
 const client = new Discord.Client();
+const moment = require('moment');
+
 
 var permitted = new HashMap();
+// July 9th 2017, 8:50:10 pm
+var startTime = moment();
+var requestCounter = 0;
 var currentTime = 0;
 var list;
 var command;
@@ -31,7 +36,8 @@ client.on('message', message =>{
 		}
 	});
 	
-	if(command === '!permit' && user != ''){			
+	if(command === '!permit' && user != ''){
+		requestCounter++;			
 		if(message.author.id === credentials.user.id) {
 			//No time was given
 			if (isNaN(time)) {time = 60;}
@@ -56,6 +62,7 @@ client.on('message', message =>{
 	}
 
 	else if(message.content === '!permissions') {
+		requestCounter++;
 		if(permitted.has(message.author.id) || message.author.id === credentials.user.id) {
 			message.reply('Authorized users: \n');
 
@@ -78,6 +85,7 @@ client.on('message', message =>{
 	}
 		
 	else if(message.content === '!open') {
+		requestCounter++;
 		if(permitted.has(message.author.id) || message.author.id === credentials.user.id) {
 			if(currentTime - ((new Date).getTime()) <= 0)	{
 				currentTime = (new Date).getTime()+(1000*30);
@@ -109,6 +117,7 @@ client.on('message', message =>{
 	}
 
 	else if(command === '!remove' && user !='') {
+		requestCounter++;
 		if(message.author.id === credentials.user.id) {
 
 			message.mentions.users.map((user => {
@@ -123,7 +132,8 @@ client.on('message', message =>{
 		}
 	}
 
-	else if(message.content === '!help'){		
+	else if(message.content === '!help'){	
+		requestCounter++;	
 		var reply = 'Available commands: \n\n'
 		+ '`!permit` grants a user permission to open door. Only available to <@'+credentials.user.id+'>\n' 
 		+ '`!permissions` returns a list of permitted users. Only available to currently permitted users\n'
@@ -132,6 +142,15 @@ client.on('message', message =>{
 			
 		+ 'You can find the source code at https://github.com/M4nnogroth/Gibbot\n'
 		+ 'All actions are logged';
+		message.channel.sendMessage(reply);
+	}
+
+	else if(message.content === '!uptime'){		
+		requestCounter++;
+		reply = "I have been online since: `" 
+		+ startTime.format('MMMM Do YYYY, h:mm:ss a')  
+		+ "`, about " + startTime.fromNow() + "\n"
+		+ requestCounter + " requests handled";
 		message.channel.sendMessage(reply);
 	}
 	/*
@@ -143,8 +162,6 @@ client.on('message', message =>{
 			}).catch(console.error);
 			
 	}*/
-
-		
 })
 
 	
