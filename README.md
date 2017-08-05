@@ -4,11 +4,7 @@ permition based door opener for residents at Chalmers studentbostäder using nod
 ## How to use
 1. Change name of credentials_template.json to credentials.json and replace with your own data
 2. npm install (discord.js might complain about opus. Ignore this)
-3. cd src/
-4. node bot.js
+3. npm start
 
-## foreverjs
-It seems very possible to run this bot using [foreverjs](https://github.com/foreverjs/forever) in order to prevent exceptions and general hiccups from bringing it down. No extensive testing has been done however so use at your own risk. 
-
-1. forever start bot.js
-2. forever stop bot.js
+## TODO
+* Optimize login, currently very slow
