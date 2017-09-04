@@ -107,4 +107,9 @@ client.on("message", (message) => {
     });
 });
 
+client.on("disconnect",() => {
+    console.log("Connection timed out, reconnecting...");
+    client.connect();
+});
+
 client.login(credentials.bot.token);
