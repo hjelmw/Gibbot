@@ -51,8 +51,8 @@ client.on("message", (message) => {
                         value = (value - ((new Date).getTime())) / 1000 / 60;
                         reply += '<@' + key + '>' + ' : ' + Math.floor(value) + ' Minutes left' + '\n';
                     });
-                    resolve(reply);
                     //Action was allowed
+                    resolve(reply);
                     break;
                 case "!delete":
                     message.mentions.users.map((user => {
@@ -78,7 +78,7 @@ client.on("message", (message) => {
                     permitted.forEach(function (value, key) {
                         value = Math.floor((value - ((new Date).getTime())) / 1000 / 60);
                         if (!isNaN) reply += '<@' + key + '>' + ' : ' + value + ' Minutes left' + '\n';
-                        else reply += '';
+                        else reply += 'None';
                     });
                     resolve(reply);
                     break;
@@ -103,6 +103,7 @@ client.on("message", (message) => {
         requestCounter++;
         message.channel.sendMessage(res);
     }).catch(err => {
+        message.channel.sendMessage(res);
         console.log(err);
     });
 });
