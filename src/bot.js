@@ -103,7 +103,7 @@ client.on("message", (message) => {
         requestCounter++;
         message.channel.sendMessage(res);
     }).catch(err => {
-        message.channel.sendMessage(res);
+        message.channel.sendMessage(err);
         console.log(err);
     });
 });
