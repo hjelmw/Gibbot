@@ -30,6 +30,8 @@ client.on("message", (message) => {
     user = list[1];
     time = list[list.length - 1];
     reply = '';
+    console.log(list);
+    console.log(command);
     //Check if permission expired
     permitted.forEach((value, key) => {
         //Remove expired users
@@ -38,7 +40,7 @@ client.on("message", (message) => {
     });
     var messageHandler = new Promise((resolve, reject) => {
         if (list.length > 1 && commands.indexOf(command) > -1) { //Check that message is from user and not bot
-            if (message.author.id !== credentials.user.id) reject("You are not <@' + credentials.user.id + '>");
+            if (message.author.id !== credentials.user.id) return reject("You are not <@' + credentials.user.id + '>");
             switch (command) { //actions with parameters
                 case "!permit":
                     if (isNaN(time)) time = 60; //No time was given
@@ -54,19 +56,23 @@ client.on("message", (message) => {
                     //Action was allowed
                     resolve(reply);
                     break;
-                case "!delete":
-                    message.mentions.users.map((user => {
+                case "!remove":
+					if(message.author.id === credentials.user.id){
+						message.mentions.users.map((user => {
                         permitted.remove(user.id);
-                        reply += ('Ok, deleted <@' + user.id + '>');
-                    }));
-                    resolve(reply);
-                    break;
+							reply += ('Ok, removed <@' + user.id + '>');
+						}));
+					}
+					else if(permitted.has(message.author.id)) permitted.remove(message.author.id);
+					else return reject("You do not have permission to do that");
+					resolve(reply !== "" ? reply : "Ok, removed <@" + message.author.id + ">");
+					break;
             }
         } else {
             switch (message.content) { //actions witout parameters
                 case "!open":
                     //opens needs extra check for permission
-                    if (message.author.id !== credentials.user.id) reject("You are not <@' + credentials.user.id + '>");
+                    if (message.author.id !== credentials.user.id) return reject("You do not have permission to do that");
                     message.reply('Ok, please wait...');
                     functions.open_door(credentials.login.id, credentials.login.pwd, (data) => {
                         //Wait for callback
@@ -77,10 +83,9 @@ client.on("message", (message) => {
                     message.reply('Authorized users: \n');
                     permitted.forEach(function (value, key) {
                         value = Math.floor((value - ((new Date).getTime())) / 1000 / 60);
-                        if (!isNaN) reply += '<@' + key + '>' + ' : ' + value + ' Minutes left' + '\n';
-                        else reply += 'None';
+                        if (!isNaN(value)) reply += '<@' + key + '>' + ' : ' + value + ' Minutes left' + '\n';
                     });
-                    resolve(reply);
+                    resolve(reply !== "" ? reply : "There are no permitted users");
                     break;
                 case "!help":
                     resolve('Available commands: \n\n'
