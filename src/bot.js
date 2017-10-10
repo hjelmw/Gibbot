@@ -38,7 +38,7 @@ client.on("message", (message) => {
     });
     var messageHandler = new Promise((resolve, reject) => {
         if (list.length > 1 && commands.indexOf(command) > -1) { //Check that message is from user and not bot
-            if (message.author.id !== credentials.user.id) return reject("You are not <@' + credentials.user.id + '>");
+            if (message.author.id !== credentials.user.id) reject("You are not <@' + credentials.user.id + '>");
             switch (command) { //actions with parameters
                 case "!permit":
                     if (isNaN(time)) time = 60; //No time was given
@@ -66,7 +66,7 @@ client.on("message", (message) => {
             switch (message.content) { //actions witout parameters
                 case "!open":
                     //opens needs extra check for permission
-                    if (message.author.id !== credentials.user.id) return reject("You are not <@' + credentials.user.id + '>");
+                    if (message.author.id !== credentials.user.id) reject("You are not <@' + credentials.user.id + '>");
                     message.reply('Ok, please wait...');
                     functions.open_door(credentials.login.id, credentials.login.pwd, (data) => {
                         //Wait for callback
