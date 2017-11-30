@@ -57,22 +57,21 @@ client.on("message", (message) => {
                     resolve(reply);
                     break;
                 case "!remove":
-					if(message.author.id === credentials.user.id){
-						message.mentions.users.map((user => {
-                        permitted.remove(user.id);
-							reply += ('Ok, removed <@' + user.id + '>');
-						}));
-					}
-					else if(permitted.has(message.author.id)) permitted.remove(message.author.id);
-					else return reject("You do not have permission to do that");
+                    if(permitted.has(message.author.id)) permitted.remove(message.author.id);
+                    //could not remove self or user is not admin
+                    else if(message.author.id !== credentials.user.id) return reject("You do not have permission to do that"); 
+                    message.mentions.users.map((user => {
+                        permitted.delete(user.id);
+                            reply += ('Ok, removed <@' + user.id + '>' + '\n');
+                        }));
+                    }
 					resolve(reply !== "" ? reply : "Ok, removed <@" + message.author.id + ">");
 					break;
-            }
         } else {
             switch (message.content) { //actions witout parameters
                 case "!open":
                     //opens needs extra check for permission
-                    if (message.author.id !== credentials.user.id) return reject("You do not have permission to do that");
+                    if (message.author.id !== credentials.user.id || !permitted.has(message.author.id)) return reject("You do not have permission to do that");
                     message.reply('Ok, please wait...');
                     functions.open_door(credentials.login.id, credentials.login.pwd, (data) => {
                         //Wait for callback
@@ -115,7 +114,6 @@ client.on("message", (message) => {
 
 client.on("disconnect",() => {
     console.log("Connection timed out, reconnecting...");
-    client.connect();
 });
 
 client.login(credentials.bot.token);
