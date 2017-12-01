@@ -7,8 +7,9 @@ const moment = require('moment');
 
 var permitted = new HashMap();
 //Because message changes when bot responds we need to store available commands 
-var commands = ["!permit", "!delete", "!open", "!permissions", "!help"];
+var commands = ["!permit", "!remove", "!open", "!permissions", "!help"];
 // July 9th 2017, 8:50:10 pm
+var canOpen = true;
 var startTime = moment();
 var requestCounter = 1;
 var currentTime = 0;
@@ -20,7 +21,7 @@ var reply = '';
 var value = 0;
 
 client.on("error", (error) => {
-    Console.log("An error occured: " + error);
+    console.log("An error occured: " + error);
 });
 
 client.on("message", (message) => {
@@ -30,17 +31,16 @@ client.on("message", (message) => {
     user = list[1];
     time = list[list.length - 1];
     reply = '';
-    console.log(list);
-    console.log(command);
+    //console.log(message);
     //Check if permission expired
     permitted.forEach((value, key) => {
         //Remove expired users
-        //TODO replace with moment
         if (((value / 1000 / 60) - (new Date).getTime() / 1000 / 60) <= 0) permitted.remove(key);
     });
     var messageHandler = new Promise((resolve, reject) => {
         if (list.length > 1 && commands.indexOf(command) > -1) { //Check that message is from user and not bot
             if (message.author.id !== credentials.user.id) return reject("You are not <@' + credentials.user.id + '>");
+            console.log(command);
             switch (command) { //actions with parameters
                 case "!permit":
                     if (isNaN(time)) time = 60; //No time was given
@@ -57,21 +57,21 @@ client.on("message", (message) => {
                     resolve(reply);
                     break;
                 case "!remove":
-                    if(permitted.has(message.author.id)) permitted.remove(message.author.id);
                     //could not remove self or user is not admin
-                    else if(message.author.id !== credentials.user.id) return reject("You do not have permission to do that"); 
+                    if (message.author.id !== credentials.user.id) return reject("You do not have permission to do that");
                     message.mentions.users.map((user => {
                         permitted.delete(user.id);
-                            reply += ('Ok, removed <@' + user.id + '>' + '\n');
-                        }));
-                    }
-					resolve(reply !== "" ? reply : "Ok, removed <@" + message.author.id + ">");
-					break;
+                        reply += ('Ok, removed <@' + user.id + '>' + '\n');
+                    }));
+                    resolve(reply !== "" ? reply : "Ok, removed <@" + message.author.id + ">");
+            }
         } else {
             switch (message.content) { //actions witout parameters
                 case "!open":
-                    //opens needs extra check for permission
-                    if (message.author.id !== credentials.user.id || !permitted.has(message.author.id)) return reject("You do not have permission to do that");
+                    if (message.author.id !== credentials.user.id || permitted.has(message.author.id)) return reject("You do not have permission to do that");
+                    else if(currentTime - ((new Date).getTime()) > 0) return reject('You need to wait another: ' + Math.floor(((currentTime/1000) - ((new Date).getTime())/1000)) + ' seconds');
+                    currentTime = (new Date).getTime()+(1000*30);
+                    
                     message.reply('Ok, please wait...');
                     functions.open_door(credentials.login.id, credentials.login.pwd, (data) => {
                         //Wait for callback
@@ -86,19 +86,21 @@ client.on("message", (message) => {
                     });
                     resolve(reply !== "" ? reply : "There are no permitted users");
                     break;
-                case "!help":
-                    resolve('Available commands: \n\n'
-                        + '`!permit` grants a user permission to open door. Only available to <@' + credentials.user.id + '>\n'
-                        + '`!permissions` returns a list of permitted users. Only available to currently permitted users\n'
-                        + '`!remove` removes a user from the list of permitted users. Only available to <@' + credentials.user.id + '>\n'
-                        + '`!open` opens the door. Only available to permitted users. This command will start a 30 second cooldown timer.\n\n'
-                        + 'You can find the source code at https://github.com/M4nnogroth/Gibbot\n');
-                    break;
                 case "!uptime":
                     resolve("I have been online since: `"
                         + startTime.format('MMMM Do YYYY, h:mm:ss a')
                         + "`, about " + startTime.fromNow() + "\n"
                         + requestCounter + " requests handled");
+                    break;
+                case "!help":
+                    resolve('Available commands: \n\n'
+                        + '`!help` displays this message\n'
+                        + '`!uptime` returns elapsed time since the bot was started and handled requests during that time\n\n'
+                        + '`!permit` grants a user permission to open door. Only available to <@' + credentials.user.id + '>\n'
+                        + '`!permissions` returns a list of permitted users. Only available to currently permitted users\n'
+                        + '`!remove` removes a user from the list of permitted users. Only available to <@' + credentials.user.id + '>\n'
+                        + '`!open` opens the door. Only available to permitted users. This command will start a 30 second cooldown timer.\n\n'
+                        + 'You can find the source code at https://github.com/M4nnogroth/Gibbot\n');
                     break;
             }
         }
@@ -112,8 +114,9 @@ client.on("message", (message) => {
     });
 });
 
-client.on("disconnect",() => {
+client.on("disconnect", () => {
     console.log("Connection timed out, reconnecting...");
+    //client.connect();
 });
 
 client.login(credentials.bot.token);
