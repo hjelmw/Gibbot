@@ -1,13 +1,16 @@
 
 ## ⚠️Update⚠️
-This bot is no longer working since CHS made updates to their website 😭. Check out my the next iteration instead! [chs-studentbostader-api]()
+This bot is no longer working since CHS made updates to their website 😭. Check out my the next version instead! [chs-studentbostader-api](https://github.com/whjelm/chs-studentbostader-api)
 
 
 # Gibbot 🤖
-Permission based door opener for residents at Chalmers studentbostäder written in [node.js](), [nightmare](https://github.com/segmentio/nightmare) and communicating via [Discord](). The bot uses web scraping to find its way through the CHS website with the goal of opening one of the buildings front doors.
+Permission based door opener for residents at Chalmers studentbostäder.
 
 #### Feature list
 * Remotely opens the door of Gibraltargatan 94 (Emilsborg) 🔑🚪
+* Written in [node.js](https://nodejs.org/en/)🤓
+* Web scraping with [nightmare.js](http://www.nightmarejs.org/)👻😨
+* Communicates via [discord.js](https://discord.js.org/#/)💬
 * Permission based ✋🤖
 * Could at one point play music 🎙️🤖🎵 (why though❓🤔)
 
