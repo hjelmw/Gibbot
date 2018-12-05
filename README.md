@@ -13,14 +13,16 @@ Permission based door opener for residents at Chalmers studentbostäder written 
 
 See attached images for examples.
 
-# Images
-![simsalabim](https://github.com/whjelm/Gibbot/img/door_open_gibbot.jpg)
-![amazing functionality](permissions_gibbot.jpg)
-
 ## How to use
 1. Change name of credentials_template.json to credentials.json and replace with your own data
 2. npm install (discord.js might complain about opus. Ignore this)
 3. npm start
+
+# Images
+![simsalabim](https://raw.githubusercontent.com/whjelm/Gibbot/master/img/door_open_gibbot.jpg)
+![amazing functionality](https://raw.githubusercontent.com/whjelm/Gibbot/master/img/permit_user.jpg)
+
+
 
 ## TODO
 * Optimize login, currently very slow
